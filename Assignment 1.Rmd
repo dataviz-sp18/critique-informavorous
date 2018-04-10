@@ -1,0 +1,65 @@
+---
+title: "Assignment 1"
+subtitle: "Data Visualization"
+author: "Misha Ash"
+date: "4/10/2018"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(here)
+library(readr)
+library(readxl)
+library(data.table)
+library(lubridate)
+library(tidyverse)
+library(purrr)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+
+```
+
+
+## Part 1: Visualization critique
+```{r}
+
+```
+
+
+## Part 2: ggplot2 and the grammar of graphics
+```{r include = FALSE, message = FALSE}
+# transformed and anonymized data; removed original files
+STAFF_PYRL <- read_csv(here::here("data", "STAFF_PYRL.csv"))
+STAFF_CARE_C <- read_csv(here::here("data", "STAFF_CARE_C.csv"))
+
+ggplot(STAFF_PYRL, aes(Date, Hours)) +
+
+  geom_col(aes(fill = Name), color = "white", size = 0.28) +
+  scale_fill_brewer(type = "qual", palette = "Set3", direction = -1) +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        legend.title = element_text(""), legend.position = "bottom") +
+
+  geom_point(data = STAFF_CARE_C, 
+             aes(y = `CG PER STAFF`, color = "Care per Staff Hour"), size = .25) +
+  
+  geom_line(data = STAFF_CARE_C, 
+              aes(Date, `CG PER STAFF`, color = "Care per Staff Hour"), 
+              size = .45, alpha = .5) +
+  
+  stat_smooth(data = STAFF_CARE_C, 
+              aes(Date, `STAFF HOURS`, color = "Projected Staff Hours"), 
+              method = lm, fullrange = TRUE, size = .55, alpha = .5, fill = "lavender") +
+
+  labs(x = "", y = "Biweekly Hours", fill="", colour = "",
+       title = "Office Staffing",
+       subtitle = "Staff Hours & Care Provided")
+```
+
+
+
+
