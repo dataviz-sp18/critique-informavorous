@@ -1,7 +1,7 @@
 Assignment 1
 ================
 Misha Ash
-4/16/2018
+4/15/2018
 
 ## Part 1: visualization critique
 
@@ -87,7 +87,7 @@ This visualization shows the hours of individual staff members color
 coded within each bar, and total staff hours worked within each biweekly
 period can be read off of the total height of each bar. The color scheme
 is chosen to provide contrast that is easy to distinguish without being
-exessively vivid, and the bars are divided with thin white lines to
+excessively vivid, and the bars are divided with thin white lines to
 further enhance the segmentation. Although the graph displays time
 series data, for which lines are often preferable to clearly show change
 over time, in this case the bars enable a view of both total hours as
@@ -132,7 +132,25 @@ Additional adjustments to the appearance of the visualization include
 moving the legends to the bottom, which provides more horizontal space
 for the graph, and using the minimal theme to provide a less cluttered
 appearance. Removing some of the grid lines was attempted but detracted
-from being able to make estimates, such as the approximate number of
-biweekly staff hours that may be needed by mid-2018 (approximately 325 ±
+from the ability to explore and make estimates, such as the approximate
+number of biweekly staff hours that may be needed by mid-2018 (325 ±
 25). The data for this graph was taken directly from the company’s
 payroll records.
+
+### The Story
+
+The graph tells us that after a little over a year of hovering between
+75 and 100 staff hours every two weeks, staff hours began to rise
+quickly starting in the middle of 2017 and nearly tripled toward the end
+of the third quarter. The caregiving services provided per staff hour
+fell by about half during the same period, returning to levels seen
+before a swell from third quarter of 2016 through the first half of
+2017. This ratio has since stayed relatively consistent. Assuming
+staffing was adequate even at the height of care provided per staff
+hour, considerable wiggle room remains even if the company continues to
+grow, suggesting that the extrapolation of staffing needs from the trend
+could be an overestimation even for values at the lower end of the error
+range. However, this visualization alone cannot tell the whole story of
+staffing needs—many other data are needed to make an informed decision
+about staffing—but it does contribute an important set of comparisons
+for those planning the way forward for a growing business.

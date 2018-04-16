@@ -2,7 +2,7 @@
 title: "Assignment 1"
 subtitle: "Data Visualization"
 author: "Misha Ash"
-date: "4/16/2018"
+date: "4/15/2018"
 output: github_document
 ---
 
@@ -37,6 +37,7 @@ Furthermore, many elements can be toggled (description, metadata, thumbnails, ou
 The aesthetics of the visualization are appealing and, combined with the interesting, complex, convoluted structure of the brain, it is beautiful. Despite the complex data presented, it does not appear cluttered and irrelevant details are not included. The tool can also be insightful, and indeed it is designed to foster insight. Highlighting structures and it is easy to imagine that seeing relations between structures at high resolution can yield insight into the architecture of the brain. One limitation of this tool might be the inability to navigate and explore these structures in three dimensions, however, which may be more insightful. 
 
 Understanding the human brain---often recognized as the most complex piece of matter in the known universe---is no small feat, and every advance brings possibilities of developments of new treatments and interventions closer to the horizon. Advancing understanding of the brain is valuable and, in light of the prevalence and impact of mental illnesses, significant. The visualization may therefore also be said to be enlightening. 
+
 
 
 ## Part 2: ggplot2 and the grammar of graphics
