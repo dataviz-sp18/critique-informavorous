@@ -1,9 +1,9 @@
 Assignment 1
 ================
 Misha Ash
-4/10/2018
+4/16/2018
 
-## Part 1: Visualization critique
+## Part 1: visualization critique
 
 The [Allen Institute for Brain Science](https://www.alleninstitute.org/)
 has developed a range of publicly available research tools for
@@ -81,36 +81,58 @@ enlightening.
 
 ## Part 2: ggplot2 and the grammar of graphics
 
-``` r
-ggplot(STAFF_PYRL, aes(Date, Hours)) +
-  
-  stat_smooth(data = STAFF_CARE_C, 
-              aes(Date, `STAFF HOURS`, color = "Projected Staff Hours"), 
-              method = "gam", fullrange = TRUE, size = .55, alpha = .75, fill = "lavender") +
+![](Assignment_1_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
-  geom_line(aes(Date, group=Name), size = 0.28, alpha = .4) +
-  #scale_color_brewer(type = "qual", palette = "Set3", direction = -1) +
-  theme_minimal() +
-  theme(#panel.grid.major.x = element_blank(),
-        #panel.grid.minor.x = element_blank(),
-        legend.title = element_text(""), legend.position = "bottom") +
-
-  geom_point(data = STAFF_CARE_C, 
-             aes(y = `CG PER STAFF`, color = "Care per Staff Hour"), size = .25) +
-  
-  geom_line(data = STAFF_CARE_C, 
-              aes(Date, `CG PER STAFF`, color = "Care per Staff Hour"), 
-              size = .45, alpha = .5) +
-
-  labs(x = "", y = "Biweekly Hours", fill="", colour = "",
-       title = "Office Staffing",
-       subtitle = "Staff Hours & Care Provided")
-```
-
-    ## Warning: Removed 22 rows containing non-finite values (stat_smooth).
-
-    ## Warning: Removed 22 rows containing missing values (geom_point).
-
-    ## Warning: Removed 22 rows containing missing values (geom_path).
+This visualization shows the hours of individual staff members color
+coded within each bar, and total staff hours worked within each biweekly
+period can be read off of the total height of each bar. The color scheme
+is chosen to provide contrast that is easy to distinguish without being
+exessively vivid, and the bars are divided with thin white lines to
+further enhance the segmentation. Although the graph displays time
+series data, for which lines are often preferable to clearly show change
+over time, in this case the bars enable a view of both total hours as
+well as the proportion of the hours accounted for by each staff member
+(via the color channel) for every period. When staff hours are instead
+shown with lines and broken down by each staff member the result is
+considerably more difficult to parse and a separate line for total staff
+hours would be needed:
 
 ![](Assignment_1_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+The bar chart is therefore a better solution for displaying both total
+staff hours and the breakdown of total hours by staff member.
+
+Seeing the hours grouped by staff member is meaningful because it
+contributes to the purpose the graph serves, which is to contribute to
+informed executive decisions about whether staffing is adequate and how
+staffing needs are expected to change if current growth trends continue.
+Toward this end, two additional metrics are also displayed, this time
+with lines:
+
+  - The relative amount of care provided for every hour staff work to
+    oversee and manage the delivery of this care.
+
+  - A projection of the number of staff hours will be needed in the
+    coming months given the trend thus far.
+
+![](Assignment_1_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+Given the narrower sizing of the bars, change information is apparent
+even without the use of lines for staff hours. Alpha values are adjusted
+to enhance contrast between the bars and lines. We can now see that in
+the third quarter of 2016 care provided for each staff hour worked begin
+to rise. Then, as new staff joined the office starting around mid-2017,
+this metric returned to levels comparable to those at the beginning of
+the timeline shown. The turquoise projection line extrapolates total
+staff hours with a linear model, providing a rough estimate of expected
+staff hours needed to maintain the average ratio of staff hours to
+caregiving service hours represented by the red line.
+
+Additional adjustments to the appearance of the visualization include
+moving the legends to the bottom, which provides more horizontal space
+for the graph, and using the minimal theme to provide a less cluttered
+appearance. Removing some of the grid lines was attempted but detracted
+from being able to make estimates, such as the approximate number of
+biweekly staff hours that may be needed by mid-2018 (approximately 325 ±
+25). The data for this graph was taken directly from the company’s
+payroll records.

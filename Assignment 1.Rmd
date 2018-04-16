@@ -2,7 +2,7 @@
 title: "Assignment 1"
 subtitle: "Data Visualization"
 author: "Misha Ash"
-date: "4/10/2018"
+date: "4/16/2018"
 output: github_document
 ---
 
@@ -22,7 +22,7 @@ library(ggplot2)
 library(ggthemes)
 ```
 
-## Part 1: Visualization critique
+## Part 1: visualization critique
 
 The [Allen Institute for Brain Science](https://www.alleninstitute.org/) has developed a range of publicly available research tools for neuroscientists, including a number of brain atlases. Among these is the [Reference Atlas of the Adult Human Brain](http://atlas.brain-map.org/), which is one of the most accurate representations of the structure of the human brain to date. According to [Ding et al. (2016)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5054943/):  
 
@@ -41,16 +41,55 @@ Understanding the human brain---often recognized as the most complex piece of ma
 
 ## Part 2: ggplot2 and the grammar of graphics
 
-The following visualization is communicates time series data about office staffing in a small homecare business. 
-
-```{r warning = FALSE, include = FALSE}
+```{r warning = FALSE, message = FALSE, echo = FALSE}
 # transformed and anonymized data; removed original files
 STAFF_PYRL <- read_csv(here::here("data", "STAFF_PYRL.csv"))
 STAFF_CARE_C <- read_csv(here::here("data", "STAFF_CARE_C.csv"))
 
 ggplot(STAFF_PYRL, aes(Date, Hours)) +
 
-  geom_col(aes(fill = Name), color = "white", size = 0.28, alpha = .6) +
+  geom_col(aes(fill = Name), color = "white", size = 0.28, alpha = .8) +
+  scale_fill_brewer(type = "qual", palette = "Set3", direction = -1) +
+  theme_minimal() +
+  theme(#panel.grid.major.x = element_blank(),
+        #panel.grid.minor.x = element_blank(),
+        legend.title = element_text(""), legend.position = "bottom" #,
+        #axis.ticks.x = element_line()
+        ) +
+
+  labs(x = "", y = "Total Biweekly Hours", fill="", colour = "",
+       title = "Office Staffing")
+```
+
+This visualization shows the hours of individual staff members color coded within each bar, and total staff hours worked within each biweekly period can be read off of the total height of each bar. The color scheme is chosen to provide contrast that is easy to distinguish without being excessively vivid, and the bars are divided with thin white lines to further enhance the segmentation. Although the graph displays time series data, for which lines are often preferable to clearly show change over time, in this case the bars enable a view of both total hours as well as the proportion of the hours accounted for by each staff member (via the color channel) for every period. When staff hours are instead shown with lines and broken down by each staff member the result is considerably more difficult to parse and a separate line for total staff hours would be needed:
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+ggplot(STAFF_PYRL, aes(Date, Hours)) +
+
+  geom_line(aes(Date, group=Name, color=Name), size = 0.38, alpha = .9) +
+  #scale_color_brewer(type = "qual", palette = "Set3", direction = -1) +
+  theme_minimal() +
+  theme(#panel.grid.major.x = element_blank(),
+        #panel.grid.minor.x = element_blank(),
+        legend.title = element_text(""), legend.position = "bottom") +
+
+  labs(x = "", y = "Total Biweekly Hours", fill="", colour = "",
+       title = "Office Staffing")
+
+```
+
+The bar chart is therefore a better solution for displaying both total staff hours and the breakdown of total hours by staff member.
+
+Seeing the hours grouped by staff member is meaningful because it contributes to the purpose the graph serves, which is to contribute to informed executive decisions about whether staffing is adequate and how staffing needs are expected to change if current growth trends continue. Toward this end, two additional metrics are also displayed, this time with lines: 
+
+* The relative amount of care provided for every hour staff work to oversee and manage the delivery of this care. 
+
+* A projection of the number of staff hours will be needed in the coming months given the trend thus far. 
+
+```{r warning = FALSE, message = FALSE, echo = FALSE}
+ggplot(STAFF_PYRL, aes(Date, Hours)) +
+
+  geom_col(aes(fill = Name), color = "white", size = 0.28, alpha = .7) +
   scale_fill_brewer(type = "qual", palette = "Set3", direction = -1) +
   theme_minimal() +
   theme(#panel.grid.major.x = element_blank(),
@@ -60,47 +99,25 @@ ggplot(STAFF_PYRL, aes(Date, Hours)) +
         ) +
 
   geom_point(data = STAFF_CARE_C, 
-             aes(y = `CG PER STAFF`, color = "Care per Staff Hour"), size = .25) +
+             aes(y = `CG PER STAFF`, color = "Care provided per staff hour worked"), size = .25) +
   
   geom_line(data = STAFF_CARE_C, 
-              aes(Date, `CG PER STAFF`, color = "Care per Staff Hour"), 
+              aes(Date, `CG PER STAFF`, color = "Care provided per staff hour worked"), 
               size = .45, alpha = .5) +
   
   stat_smooth(data = STAFF_CARE_C, 
-              aes(Date, `STAFF HOURS`, color = "Projected Staff Hours"), 
-              method = lm, fullrange = TRUE, size = .55, alpha = .75, fill = "lavender") +
+              aes(Date, `STAFF HOURS`, color = "Projected staff hours"), 
+              method = lm, fullrange = TRUE, size = .55, alpha = .45, fill = "lavender") +
 
-  labs(x = "", y = "Biweekly Hours", fill="", colour = "",
+  labs(x = "", y = "Total Biweekly Hours", fill="", colour = "",
        title = "Office Staffing",
-       subtitle = "Staff Hours & Care Provided")
+       subtitle = "Staff Hours for Care Provided",
+       caption = "SOURCE: COMPANY STAFF PAYROLL RECORDS") #+
+  
+  #guides(color = guide_legend(nrow = 1))
 ```
 
+Given the narrower sizing of the bars, change information is apparent even without the use of lines for staff hours. Alpha values are adjusted to enhance contrast between the bars and lines. We can now see that in the third quarter of 2016 care provided for each staff hour worked begin to rise. Then, as new staff joined the office starting around mid-2017, this metric returned to levels comparable to those at the beginning of the timeline shown. The turquoise projection line extrapolates total staff hours with a linear model, providing a rough estimate of expected staff hours needed to maintain the average ratio of staff hours to caregiving service hours represented by the red line. 
 
-```{r include = FALSE}
-ggplot(STAFF_PYRL, aes(Date, Hours)) +
-  
-  stat_smooth(data = STAFF_CARE_C, 
-              aes(Date, `STAFF HOURS`, color = "Projected Staff Hours"), 
-              method = "gam", fullrange = TRUE, size = .55, alpha = .75, fill = "lavender") +
-
-  geom_line(aes(Date, group=Name), size = 0.28, alpha = .4) +
-  #scale_color_brewer(type = "qual", palette = "Set3", direction = -1) +
-  theme_minimal() +
-  theme(#panel.grid.major.x = element_blank(),
-        #panel.grid.minor.x = element_blank(),
-        legend.title = element_text(""), legend.position = "bottom") +
-
-  geom_point(data = STAFF_CARE_C, 
-             aes(y = `CG PER STAFF`, color = "Care per Staff Hour"), size = .25) +
-  
-  geom_line(data = STAFF_CARE_C, 
-              aes(Date, `CG PER STAFF`, color = "Care per Staff Hour"), 
-              size = .45, alpha = .5) +
-
-  labs(x = "", y = "Biweekly Hours", fill="", colour = "",
-       title = "Office Staffing",
-       subtitle = "Staff Hours & Care Provided")
-
-```
-
+Additional adjustments to the appearance of the visualization include moving the legends to the bottom, which provides more horizontal space for the graph, and using the minimal theme to provide a less cluttered appearance. Removing some of the grid lines was attempted but detracted from the ability to explore and make estimates, such as the approximate number of biweekly staff hours that may be needed by mid-2018 (325 ± 25). The data for this graph was taken directly from the company's payroll records.
 
